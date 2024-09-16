@@ -1,7 +1,13 @@
 package storage
 
-type JSONStorage struct {
-	FileName string
-}
+import "path/filepath"
 
-var JsonStore = JSONStorage{FileName: "tasks.json"}
+const FileName = "tasks.json"
+
+var FilePath = filepath.Join("internal", "storage", FileName)
+
+//type JSONStorage struct {
+//	FilePath string
+//}
+//
+//var JsonStore = JSONStorage{FilePath: StoragePath}

@@ -4,26 +4,43 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"path/filepath"
-	"task-tracker-cli/internal/storage"
 )
 
-func NewJSON(file storage.JSONStorage, jsonData []byte) error {
+func WriteToJSON(newTask Task, path string) error {
+	var tasks []Task
 
-	// Construct the path to the internal storage directory
-	path := filepath.Join("internal", "storage", file.FileName)
-
-	err := os.WriteFile(path, jsonData, 0644)
+	// Read the existing JSON file content
+	data, err := os.ReadFile(path)
 	if err != nil {
-		return fmt.Errorf("Error writing file: %w", err)
+		if os.IsNotExist(err) {
+			// If file doesn't exist, initialize an empty task list
+			tasks = []Task{}
+		} else {
+			return fmt.Errorf("Error reading file: %w", err)
+		}
 	}
+
+	// Unmarshal the existing content into the `tasks` slice
+	errUnmarshal := json.Unmarshal(data, &tasks)
+	if errUnmarshal != nil && len(data) > 0 { // Avoid error on empty file
+		return fmt.Errorf("Error unmarshaling JSON: %w", errUnmarshal)
+	}
+
+	// Append the new task
+	tasks = append(tasks, newTask)
+
+	// Marshal updated tasks list to JSON
+	result, errorMar := json.MarshalIndent(tasks, "", "  ")
+	if errorMar != nil {
+		return fmt.Errorf("Error marshaling the file: %w", errorMar)
+	}
+
+	// Write to file and create it if not exists
+	errFile := os.WriteFile(path, result, 0644)
+	if errFile != nil {
+		return fmt.Errorf("Error writing or creating JSON file: %w", errFile)
+	}
+
+	fmt.Println("Task successfully written to tasks.json")
 	return nil
-}
-
-func WriteToJSON(newTask Task) ([]byte, error) {
-	jsonData, err := json.MarshalIndent(newTask, "", "  ")
-	if err != nil {
-		return nil, fmt.Errorf("Error marshaling JSON: %w", err)
-	}
-	return jsonData, nil
 }

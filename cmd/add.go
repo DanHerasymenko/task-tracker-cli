@@ -24,7 +24,7 @@ func add(_ *cobra.Command, args []string) {
 	taskName := args[0]
 
 	//add new task to the json file, create it if it does not exist
-	if err := task.Add(taskName, &storage.JsonStore); err != nil {
+	if err := task.Add(taskName, storage.FilePath); err != nil {
 		handleErr(err)
 	}
 
