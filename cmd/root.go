@@ -17,10 +17,6 @@ func Execute() {
 	}
 }
 
-func init() {
-	rootCmd.AddCommand(addCmd)
-}
-
 func handleErr(err error) {
 	_, _ = fmt.Fprintln(os.Stderr, err)
 	os.Exit(1)
