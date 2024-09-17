@@ -3,8 +3,33 @@ package task
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 )
+
+func IncrementId(path string) int {
+	var tasks []Task
+
+	data, err := os.ReadFile(path)
+
+	if err != nil {
+		if os.IsNotExist(err) {
+			// If file doesn't exist, return id as 1
+			return 1
+		} else {
+			log.Fatal("Error reading file: %w", err)
+		}
+	}
+
+	// Unmarshal the existing content into the `tasks` slice
+	errUnmarshal := json.Unmarshal(data, &tasks)
+	if errUnmarshal != nil && len(data) > 0 { // Avoid error on empty file
+		log.Fatal("Error unmarshaling JSON: %w", errUnmarshal)
+	}
+
+	lastId := tasks[len(tasks)-1].Id // Get the last element from the array and retrieve the ID of the last task
+	return lastId + 1
+}
 
 func WriteToJSON(newTask Task, path string) error {
 	var tasks []Task

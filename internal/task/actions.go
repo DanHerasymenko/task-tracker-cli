@@ -1,18 +1,19 @@
 package task
 
+import "fmt"
+
 func Add(task string, file string) error {
 
 	newTask := Task{
-		Id:          1,
+		Id:          IncrementId(file),
 		Description: task,
 		Status:      Todo,
 		CreatedAt:   TimeNow,
 	}
-
+	fmt.Println(newTask)
 	if err := WriteToJSON(newTask, file); err != nil {
 		return err
 	}
-
 	return nil
 
 }
