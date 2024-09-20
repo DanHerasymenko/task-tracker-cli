@@ -16,7 +16,7 @@ var updateCmd = &cobra.Command{
 	Run:     update,
 }
 
-func update(_ *cobra.Command, args []string) {
+func update(cmd *cobra.Command, args []string) {
 
 	//check user input
 	if len(args) == 0 || args[0] == "" {
@@ -36,7 +36,7 @@ func update(_ *cobra.Command, args []string) {
 
 	// search a task in json file, return error if no file -> create a new file
 	// update task by ID -> return error if task ID not found -> propose to list all tasks
-	if err := task.UpdateTask(NewTaskName, storage.FilePath, TaskId); err != nil {
+	if err := task.UpdateJSON(cmd.Use, NewTaskName, storage.FilePath, TaskId); err != nil {
 		handleErr(err)
 	}
 

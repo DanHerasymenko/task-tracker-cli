@@ -8,15 +8,15 @@ import (
 	"task-tracker-cli/internal/task"
 )
 
-var deleteCmd = &cobra.Command{
-	Use:     "delete",
-	Short:   "Delete a task by ID",
-	Example: "task-tracker-cli delete 1 ",
+var markInProgressCmd = &cobra.Command{
+	Use:     "mark-in-progress",
+	Short:   "Mark task as \"in progress\" by task ID",
+	Example: "task-tracker-cli mark-in-progress 1 ",
 	Args:    cobra.ExactArgs(1),
-	Run:     deleteTask,
+	Run:     markInProgress,
 }
 
-func deleteTask(cmd *cobra.Command, args []string) {
+func markInProgress(cmd *cobra.Command, args []string) {
 
 	//check user input
 	if len(args) == 0 || args[0] == "" {
@@ -33,12 +33,12 @@ func deleteTask(cmd *cobra.Command, args []string) {
 		handleErr(errors.InvalidTaskID)
 	}
 
-	//delete task
 	if err := task.UpdateJSON(cmd.Use, "", storage.FilePath, TaskId); err != nil {
 		handleErr(err)
 	}
+
 }
 
 func init() {
-	rootCmd.AddCommand(deleteCmd)
+	rootCmd.AddCommand(markInProgressCmd)
 }
