@@ -1,0 +1,28 @@
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Go workspace files and folders
+/bin/
+/pkg/
+
+# Vendor directories (when using go mod vendor)
+/vendor/
+
+# Dependency directories
+Godeps/
+
+# Go modules
+go.sum
+
+# Goland
+/.idea/
+
+#gitattributes
+.gitattributes
