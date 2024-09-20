@@ -23,6 +23,8 @@ go.sum
 
 # Goland
 /.idea/
+.idea/
+.idea
 
 #gitattributes
 .gitattributes
